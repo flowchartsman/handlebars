@@ -3,7 +3,7 @@
 
 Handlebars for [golang](https://golang.org) with the same features as [handlebars.js](http://handlebarsjs.com) `3.0`. Hard fork of [Raymond](https://github.com/aymerick/raymond) to modularize and keep up with handlebars development.
 
-![Handlebars Logo](https://github.com/flowchartsman/handlebars/blob/main/handlebars-gopher?raw=true "Handlebars")
+![Handlebars Logo](https://github.com/flowchartsman/handlebars/blob/main/handlebars-gopher.png?raw=true "Handlebars")
 
 
 # Table of Contents
