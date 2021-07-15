@@ -1,4 +1,4 @@
-package handlebars
+package handlebarsjs
 
 import "testing"
 

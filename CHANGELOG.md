@@ -1,11 +1,13 @@
-# Raymond Changelog
+# Changelog
 
-### HEAD
+### Handlebars 3.0.0 _(July 14, 2021)_
+- Hard Fork from Raymond. Rebrand "handlebars"
+- Start with major version number 3 tracking supported version of Handlebars.js
 
-- [IMPROVEMENT] Add `RemoveHelper` and `RemoveAllHelpers` functions
 
 ### Raymond 2.0.2 _(March 22, 2018)_
 
+- [IMPROVEMENT] Add `RemoveHelper` and `RemoveAllHelpers` functions
 - [IMPROVEMENT] Add the #equal helper (#7)
 - [IMPROVEMENT] Add struct tag template variable support (#8)
 

@@ -1,4 +1,4 @@
-package raymond
+package handlebars
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/aymerick/raymond/ast"
+	"github.com/flowchartsman/handlebars/v3/ast"
 )
 
 var (

@@ -1,4 +1,4 @@
-package raymond
+package handlebars
 
 import (
 	"fmt"
@@ -7,8 +7,8 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/aymerick/raymond/ast"
-	"github.com/aymerick/raymond/parser"
+	"github.com/flowchartsman/handlebars/v3/ast"
+	"github.com/flowchartsman/handlebars/v3/parser"
 )
 
 // Template represents a handlebars template.

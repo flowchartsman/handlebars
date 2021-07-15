@@ -1,5 +1,5 @@
-// Package raymond provides handlebars evaluation
-package raymond
+// Package handlebars provides handlebars evaluation
+package handlebars
 
 // Render parses a template and evaluates it with given context
 //

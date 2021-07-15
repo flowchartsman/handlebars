@@ -7,8 +7,8 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/aymerick/raymond/ast"
-	"github.com/aymerick/raymond/lexer"
+	"github.com/flowchartsman/handlebars/v3/ast"
+	"github.com/flowchartsman/handlebars/v3/lexer"
 )
 
 // References:

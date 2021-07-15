@@ -1,4 +1,4 @@
-package handlebars
+package handlebarsjs
 
 import (
 	"fmt"
@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/aymerick/raymond"
+	"github.com/flowchartsman/handlebars/v3"
 )
 
-// cf. https://github.com/aymerick/go-fuzz-tests/raymond
+// cf. https://github.com/aymerick/go-fuzz-tests/handlebars
 const dumpTpl = false
 
 var dumpTplNb = 0
@@ -30,7 +30,7 @@ func launchTests(t *testing.T, tests []Test) {
 
 	for _, test := range tests {
 		var err error
-		var tpl *raymond.Template
+		var tpl *handlebars.Template
 
 		if dumpTpl {
 			filename := strconv.Itoa(dumpTplNb)
@@ -41,7 +41,7 @@ func launchTests(t *testing.T, tests []Test) {
 		}
 
 		// parse template
-		tpl, err = raymond.Parse(test.input)
+		tpl, err = handlebars.Parse(test.input)
 		if err != nil {
 			t.Errorf("Test '%s' failed - Failed to parse template\ninput:\n\t'%s'\nerror:\n\t%s", test.name, test.input, err)
 		} else {
@@ -56,9 +56,9 @@ func launchTests(t *testing.T, tests []Test) {
 			}
 
 			// setup private data frame
-			var privData *raymond.DataFrame
+			var privData *handlebars.DataFrame
 			if test.privData != nil {
-				privData = raymond.NewDataFrame()
+				privData = handlebars.NewDataFrame()
 				for k, v := range test.privData {
 					privData.Set(k, v)
 				}
@@ -67,7 +67,7 @@ func launchTests(t *testing.T, tests []Test) {
 			// render template
 			output, err := tpl.ExecWith(test.data, privData)
 			if err != nil {
-				t.Errorf("Test '%s' failed\ninput:\n\t'%s'\ndata:\n\t%s\nerror:\n\t%s\nAST:\n\t%s", test.name, test.input, raymond.Str(test.data), err, tpl.PrintAST())
+				t.Errorf("Test '%s' failed\ninput:\n\t'%s'\ndata:\n\t%s\nerror:\n\t%s\nAST:\n\t%s", test.name, test.input, handlebars.Str(test.data), err, tpl.PrintAST())
 			} else {
 				// check output
 				var expectedArr []string
@@ -82,7 +82,7 @@ func launchTests(t *testing.T, tests []Test) {
 					}
 
 					if !match {
-						t.Errorf("Test '%s' failed\ninput:\n\t'%s'\ndata:\n\t%s\npartials:\n\t%s\nexpected\n\t%q\ngot\n\t%q\nAST:\n%s", test.name, test.input, raymond.Str(test.data), raymond.Str(test.partials), expectedArr, output, tpl.PrintAST())
+						t.Errorf("Test '%s' failed\ninput:\n\t'%s'\ndata:\n\t%s\npartials:\n\t%s\nexpected\n\t%q\ngot\n\t%q\nAST:\n%s", test.name, test.input, handlebars.Str(test.data), handlebars.Str(test.partials), expectedArr, output, tpl.PrintAST())
 					}
 				} else {
 					expectedStr, ok := test.output.(string)
@@ -91,7 +91,7 @@ func launchTests(t *testing.T, tests []Test) {
 					}
 
 					if expectedStr != output {
-						t.Errorf("Test '%s' failed\ninput:\n\t'%s'\ndata:\n\t%s\npartials:\n\t%s\nexpected\n\t%q\ngot\n\t%q\nAST:\n%s", test.name, test.input, raymond.Str(test.data), raymond.Str(test.partials), expectedStr, output, tpl.PrintAST())
+						t.Errorf("Test '%s' failed\ninput:\n\t'%s'\ndata:\n\t%s\npartials:\n\t%s\nexpected\n\t%q\ngot\n\t%q\nAST:\n%s", test.name, test.input, handlebars.Str(test.data), handlebars.Str(test.partials), expectedStr, output, tpl.PrintAST())
 					}
 				}
 			}
