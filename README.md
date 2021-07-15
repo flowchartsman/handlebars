@@ -1,5 +1,5 @@
 # handlebars
-[![Go Reference](https://pkg.go.dev/badge/github.com/flowchartsman/handlebars.svg)](https://pkg.go.dev/github.com/flowchartsman/handlebars)
+[![Go Reference](https://pkg.go.dev/badge/github.com/flowchartsman/handlebars.svg)](https://pkg.go.dev/github.com/flowchartsman/handlebars/v3)
 
 Handlebars for [golang](https://golang.org) with the same features as [handlebars.js](http://handlebarsjs.com) `3.0`. Hard fork of [Raymond](https://github.com/aymerick/raymond) to modularize and keep up with handlebars development.
 
