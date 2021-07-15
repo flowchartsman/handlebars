@@ -55,7 +55,7 @@ Handlebars for [golang](https://golang.org) with the same features as [handlebar
 
 ## Quick Start
 
-    $ go get github.com/flowchartsman/handlebars
+    $ go get github.com/flowchartsman/handlebars/v3
 
 The quick and dirty way of rendering a handlebars template:
 
