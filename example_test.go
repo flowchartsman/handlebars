@@ -1,6 +1,10 @@
-package handlebars
+package handlebars_test
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/flowchartsman/handlebars/v3"
+)
 
 func Example() {
 	source := "<h1>{{title}}</h1><p>{{body.content}}</p>"
@@ -11,7 +15,7 @@ func Example() {
 	}
 
 	// parse template
-	tpl := MustParse(source)
+	tpl := handlebars.MustParse(source)
 
 	// evaluate template with context
 	output := tpl.MustExec(ctx)
@@ -63,11 +67,11 @@ func Example_struct() {
 		},
 	}
 
-	RegisterHelper("fullName", func(person Person) string {
+	handlebars.RegisterHelper("fullName", func(person Person) string {
 		return person.FirstName + " " + person.LastName
 	})
 
-	output := MustRender(source, ctx)
+	output := handlebars.MustRender(source, ctx)
 
 	fmt.Print(output)
 	// Output: <div class="post">
@@ -90,7 +94,7 @@ func ExampleRender() {
 	}
 
 	// render template with context
-	output, err := Render(tpl, ctx)
+	output, err := handlebars.Render(tpl, ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -108,7 +112,7 @@ func ExampleMustRender() {
 	}
 
 	// render template with context
-	output := MustRender(tpl, ctx)
+	output := handlebars.MustRender(tpl, ctx)
 
 	fmt.Print(output)
 	// Output: <h1>foo</h1><p>bar</p>
