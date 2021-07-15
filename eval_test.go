@@ -72,7 +72,34 @@ var evalTests = []Test{
 		nil, nil, nil,
 		"C",
 	},
-
+	{
+		"virtual length method on a map",
+		"Length: {{map.length}}",
+		map[string]interface{}{"map": map[string]string{"a": "a", "b": "b"}},
+		nil, nil, nil,
+		`Length: 2`,
+	},
+	{
+		"virtual length method on a slice",
+		"Length: {{arr.length}}",
+		map[string]interface{}{"arr": []int{0, 1, 2}},
+		nil, nil, nil,
+		`Length: 3`,
+	},
+	{
+		"virtual length method on an array",
+		"Length: {{arr.length}}",
+		map[string]interface{}{"arr": [...]int{0, 1, 2, 3}},
+		nil, nil, nil,
+		`Length: 4`,
+	},
+	{
+		"virtual length method on a string",
+		"Length: {{str.length}}",
+		map[string]interface{}{"str": "abcde"},
+		nil, nil, nil,
+		`Length: 5`,
+	},
 	// @todo Test with a "../../path" (depth 2 path) while context is only depth 1
 }
 
@@ -225,8 +252,7 @@ func TestEvalStructTag(t *testing.T) {
 	}
 }
 
-type TestFoo struct {
-}
+type TestFoo struct{}
 
 func (t *TestFoo) Subject() string {
 	return "foo"
@@ -246,8 +272,7 @@ func TestEvalMethod(t *testing.T) {
 	}
 }
 
-type TestBar struct {
-}
+type TestBar struct{}
 
 func (t *TestBar) Subject() interface{} {
 	return testBar

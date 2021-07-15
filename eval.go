@@ -364,6 +364,10 @@ func (v *evalVisitor) evalMethod(ctx reflect.Value, name string, exprRoot bool) 
 	}
 
 	if !method.IsValid() {
+		// No valid method found attempt to find a virtual method
+		if vMethod := getVirtualMethod(name); vMethod != nil {
+			return vMethod(ctx)
+		}
 		return zero, false
 	}
 
