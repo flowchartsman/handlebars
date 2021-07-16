@@ -1314,7 +1314,7 @@ package main
 import (
     "fmt"
 
-    "github.com/flowchartsman/handlebars/lexer"
+    "github.com/flowchartsman/handlebars/v3/lexer"
 )
 
 func main() {
@@ -1356,8 +1356,8 @@ package main
 import (
     "fmt"
 
-    "github.com/flowchartsman/handlebars/ast"
-    "github.com/flowchartsman/handlebars/parser"
+    "github.com/flowchartsman/handlebars/v3/ast"
+    "github.com/flowchartsman/handlebars/v3/parser"
 )
 
 fu  nc main() {
