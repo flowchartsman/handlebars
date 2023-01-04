@@ -630,9 +630,10 @@ func TestBasicErrors(t *testing.T) {
 	}
 
 	expectedError := regexp.QuoteMeta("Invalid path: text/this")
+	h := handlebars.New()
 
 	for _, input := range inputs {
-		_, err = handlebars.Parse(input)
+		_, err = h.Parse(input)
 		if err == nil {
 			t.Errorf("Test failed - Error expected")
 		}

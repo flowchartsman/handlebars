@@ -41,7 +41,8 @@ func launchTests(t *testing.T, tests []Test) {
 		}
 
 		// parse template
-		tpl, err = handlebars.Parse(test.input)
+		h := handlebars.New()
+		tpl, err = h.Parse(test.input)
 		if err != nil {
 			t.Errorf("Test '%s' failed - Failed to parse template\ninput:\n\t'%s'\nerror:\n\t%s", test.name, test.input, err)
 		} else {
