@@ -20,6 +20,8 @@ var (
 
 // evalVisitor evaluates a handlebars template with context
 type evalVisitor struct {
+	handlebars *Handlebars
+
 	tpl *Template
 
 	// contexts stack
@@ -47,17 +49,18 @@ type evalVisitor struct {
 // NewEvalVisitor instanciate a new evaluation visitor with given context and initial private data frame
 //
 // If privData is nil, then a default data frame is created
-func newEvalVisitor(tpl *Template, ctx interface{}, privData *DataFrame) *evalVisitor {
+func newEvalVisitor(h *Handlebars, tpl *Template, ctx interface{}, privData *DataFrame) *evalVisitor {
 	frame := privData
 	if frame == nil {
 		frame = NewDataFrame()
 	}
 
 	return &evalVisitor{
-		tpl:       tpl,
-		ctx:       []reflect.Value{reflect.ValueOf(ctx)},
-		dataFrame: frame,
-		exprFunc:  make(map[*ast.Expression]bool),
+		handlebars: h,
+		tpl:        tpl,
+		ctx:        []reflect.Value{reflect.ValueOf(ctx)},
+		dataFrame:  frame,
+		exprFunc:   make(map[*ast.Expression]bool),
 	}
 }
 
@@ -578,7 +581,7 @@ func (v *evalVisitor) findHelper(name string) reflect.Value {
 	}
 
 	// check global helpers
-	return findHelper(name)
+	return v.handlebars.findHelper(name)
 }
 
 // callFunc calls function with given options
@@ -688,7 +691,7 @@ func (v *evalVisitor) findPartial(name string) *partial {
 	}
 
 	// check global partials
-	return findPartial(name)
+	return v.handlebars.findPartial(name)
 }
 
 // partialContext computes partial context

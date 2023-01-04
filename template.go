@@ -13,25 +13,27 @@ import (
 
 // Template represents a handlebars template.
 type Template struct {
-	source   string
-	program  *ast.Program
-	helpers  map[string]reflect.Value
-	partials map[string]*partial
-	mutex    sync.RWMutex // protects helpers and partials
+	handlebars *Handlebars
+	source     string
+	program    *ast.Program
+	helpers    map[string]reflect.Value
+	partials   map[string]*partial
+	mutex      sync.RWMutex // protects helpers and partials
 }
 
 // newTemplate instanciate a new template without parsing it
-func newTemplate(source string) *Template {
+func newTemplate(h *Handlebars, source string) *Template {
 	return &Template{
-		source:   source,
-		helpers:  make(map[string]reflect.Value),
-		partials: make(map[string]*partial),
+		handlebars: h,
+		source:     source,
+		helpers:    make(map[string]reflect.Value),
+		partials:   make(map[string]*partial),
 	}
 }
 
 // Parse instanciates a template by parsing given source.
-func Parse(source string) (*Template, error) {
-	tpl := newTemplate(source)
+func (h *Handlebars) Parse(source string) (*Template, error) {
+	tpl := newTemplate(h, source)
 
 	// parse template
 	if err := tpl.parse(); err != nil {
@@ -42,8 +44,8 @@ func Parse(source string) (*Template, error) {
 }
 
 // MustParse instanciates a template by parsing given source. It panics on error.
-func MustParse(source string) *Template {
-	result, err := Parse(source)
+func (h *Handlebars) MustParse(source string) *Template {
+	result, err := h.Parse(source)
 	if err != nil {
 		panic(err)
 	}
@@ -51,13 +53,13 @@ func MustParse(source string) *Template {
 }
 
 // ParseFile reads given file and returns parsed template.
-func ParseFile(filePath string) (*Template, error) {
+func (h *Handlebars) ParseFile(filePath string) (*Template, error) {
 	b, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
 
-	return Parse(string(b))
+	return h.Parse(string(b))
 }
 
 // parse parses the template
@@ -78,7 +80,7 @@ func (tpl *Template) parse() error {
 
 // Clone returns a copy of that template.
 func (tpl *Template) Clone() *Template {
-	result := newTemplate(tpl.source)
+	result := newTemplate(tpl.handlebars, tpl.source)
 
 	result.program = tpl.program
 
@@ -133,7 +135,7 @@ func (tpl *Template) addPartial(name string, source string, template *Template) 
 		panic(fmt.Sprintf("Partial %s already registered", name))
 	}
 
-	tpl.partials[name] = newPartial(name, source, template)
+	tpl.partials[name] = newPartial(tpl.handlebars, name, source, template)
 }
 
 func (tpl *Template) findPartial(name string) *partial {
@@ -214,7 +216,7 @@ func (tpl *Template) ExecWith(ctx interface{}, privData *DataFrame) (result stri
 	}
 
 	// setup visitor
-	v := newEvalVisitor(tpl, ctx, privData)
+	v := newEvalVisitor(tpl.handlebars, tpl, ctx, privData)
 
 	// visit AST
 	result, _ = tpl.program.Accept(v).(string)

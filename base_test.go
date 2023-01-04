@@ -20,12 +20,14 @@ func launchTests(t *testing.T, tests []Test) {
 	// NOTE: TestMustache() makes Parallel testing fail
 	// t.Parallel()
 
+	h := New()
+
 	for _, test := range tests {
 		var err error
 		var tpl *Template
 
 		// parse template
-		tpl, err = Parse(test.input)
+		tpl, err = h.Parse(test.input)
 		if err != nil {
 			t.Errorf("Test '%s' failed - Failed to parse template\ninput:\n\t'%s'\nerror:\n\t%s", test.name, test.input, err)
 		} else {
@@ -86,12 +88,14 @@ func launchTests(t *testing.T, tests []Test) {
 func launchErrorTests(t *testing.T, tests []Test) {
 	t.Parallel()
 
+	h := New()
+
 	for _, test := range tests {
 		var err error
 		var tpl *Template
 
 		// parse template
-		tpl, err = Parse(test.input)
+		tpl, err = h.Parse(test.input)
 		if err != nil {
 			t.Errorf("Test '%s' failed - Failed to parse template\ninput:\n\t'%s'\nerror:\n\t%s", test.name, test.input, err)
 		} else {

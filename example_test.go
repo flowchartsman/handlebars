@@ -7,6 +7,7 @@ import (
 )
 
 func Example() {
+	h := handlebars.New()
 	source := "<h1>{{title}}</h1><p>{{body.content}}</p>"
 
 	ctx := map[string]interface{}{
@@ -15,7 +16,7 @@ func Example() {
 	}
 
 	// parse template
-	tpl := handlebars.MustParse(source)
+	tpl := h.MustParse(source)
 
 	// evaluate template with context
 	output := tpl.MustExec(ctx)
@@ -28,6 +29,7 @@ func Example() {
 }
 
 func Example_struct() {
+	h := handlebars.New()
 	source := `<div class="post">
   <h1>By {{fullName author}}</h1>
   <div class="body">{{body}}</div>
@@ -67,11 +69,11 @@ func Example_struct() {
 		},
 	}
 
-	handlebars.RegisterHelper("fullName", func(person Person) string {
+	h.RegisterHelper("fullName", func(person Person) string {
 		return person.FirstName + " " + person.LastName
 	})
 
-	output := handlebars.MustRender(source, ctx)
+	output := h.MustRender(source, ctx)
 
 	fmt.Print(output)
 	// Output: <div class="post">
@@ -86,6 +88,7 @@ func Example_struct() {
 }
 
 func ExampleRender() {
+	h := handlebars.New()
 	tpl := "<h1>{{title}}</h1><p>{{body.content}}</p>"
 
 	ctx := map[string]interface{}{
@@ -94,7 +97,7 @@ func ExampleRender() {
 	}
 
 	// render template with context
-	output, err := handlebars.Render(tpl, ctx)
+	output, err := h.Render(tpl, ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -104,6 +107,7 @@ func ExampleRender() {
 }
 
 func ExampleMustRender() {
+	h := handlebars.New()
 	tpl := "<h1>{{title}}</h1><p>{{body.content}}</p>"
 
 	ctx := map[string]interface{}{
@@ -112,7 +116,7 @@ func ExampleMustRender() {
 	}
 
 	// render template with context
-	output := handlebars.MustRender(tpl, ctx)
+	output := h.MustRender(tpl, ctx)
 
 	fmt.Print(output)
 	// Output: <h1>foo</h1><p>bar</p>

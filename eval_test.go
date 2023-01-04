@@ -189,7 +189,8 @@ func TestEvalStruct(t *testing.T) {
 		},
 	}
 
-	output := MustRender(source, ctx)
+	h := New()
+	output := h.MustRender(source, ctx)
 	if output != expected {
 		t.Errorf("Failed to evaluate with struct context")
 	}
@@ -246,7 +247,8 @@ func TestEvalStructTag(t *testing.T) {
 		},
 	}
 
-	output := MustRender(source, ctx)
+	h := New()
+	output := h.MustRender(source, ctx)
 	if output != expected {
 		t.Errorf("Failed to evaluate with struct tag context")
 	}
@@ -266,7 +268,8 @@ func TestEvalMethod(t *testing.T) {
 
 	ctx := &TestFoo{}
 
-	output := MustRender(source, ctx)
+	h := New()
+	output := h.MustRender(source, ctx)
 	if output != expected {
 		t.Errorf("Failed to evaluate struct method: %s", output)
 	}
@@ -290,7 +293,8 @@ func TestEvalMethodReturningFunc(t *testing.T) {
 
 	ctx := &TestBar{}
 
-	output := MustRender(source, ctx)
+	h := New()
+	output := h.MustRender(source, ctx)
 	if output != expected {
 		t.Errorf("Failed to evaluate struct method: %s", output)
 	}

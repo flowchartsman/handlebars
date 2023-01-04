@@ -27,7 +27,8 @@ CONTENT[ '
 func TestNewTemplate(t *testing.T) {
 	t.Parallel()
 
-	tpl := newTemplate(sourceBasic)
+	h := New()
+	tpl := newTemplate(h, sourceBasic)
 	if tpl.source != sourceBasic {
 		t.Errorf("Failed to instantiate template")
 	}
@@ -36,7 +37,8 @@ func TestNewTemplate(t *testing.T) {
 func TestParse(t *testing.T) {
 	t.Parallel()
 
-	tpl, err := Parse(sourceBasic)
+	h := New()
+	tpl, err := h.Parse(sourceBasic)
 	if err != nil || (tpl.source != sourceBasic) {
 		t.Errorf("Failed to parse template")
 	}
@@ -52,7 +54,8 @@ func TestClone(t *testing.T) {
 	sourcePartial := `I am a {{wat}} partial`
 	sourcePartial2 := `Partial for the {{wat}}`
 
-	tpl := MustParse(sourceBasic)
+	h := New()
+	tpl := h.MustParse(sourceBasic)
 	tpl.RegisterPartial("p", sourcePartial)
 
 	if (len(tpl.partials) != 1) || (tpl.partials["p"] == nil) {
@@ -77,6 +80,7 @@ func TestClone(t *testing.T) {
 }
 
 func ExampleTemplate_Exec() {
+	h := New()
 	source := "<h1>{{title}}</h1><p>{{body.content}}</p>"
 
 	ctx := map[string]interface{}{
@@ -85,7 +89,7 @@ func ExampleTemplate_Exec() {
 	}
 
 	// parse template
-	tpl := MustParse(source)
+	tpl := h.MustParse(source)
 
 	// evaluate template with context
 	output, err := tpl.Exec(ctx)
@@ -98,6 +102,7 @@ func ExampleTemplate_Exec() {
 }
 
 func ExampleTemplate_MustExec() {
+	h := New()
 	source := "<h1>{{title}}</h1><p>{{body.content}}</p>"
 
 	ctx := map[string]interface{}{
@@ -106,7 +111,7 @@ func ExampleTemplate_MustExec() {
 	}
 
 	// parse template
-	tpl := MustParse(source)
+	tpl := h.MustParse(source)
 
 	// evaluate template with context
 	output := tpl.MustExec(ctx)
@@ -116,6 +121,7 @@ func ExampleTemplate_MustExec() {
 }
 
 func ExampleTemplate_ExecWith() {
+	h := New()
 	source := "<h1>{{title}}</h1><p>{{#body}}{{content}} and {{@baz.bat}}{{/body}}</p>"
 
 	ctx := map[string]interface{}{
@@ -124,7 +130,7 @@ func ExampleTemplate_ExecWith() {
 	}
 
 	// parse template
-	tpl := MustParse(source)
+	tpl := h.MustParse(source)
 
 	// computes private data frame
 	frame := NewDataFrame()
@@ -141,10 +147,11 @@ func ExampleTemplate_ExecWith() {
 }
 
 func ExampleTemplate_PrintAST() {
+	h := New()
 	source := "<h1>{{title}}</h1><p>{{#body}}{{content}} and {{@baz.bat}}{{/body}}</p>"
 
 	// parse template
-	tpl := MustParse(source)
+	tpl := h.MustParse(source)
 
 	// print AST
 	output := tpl.PrintAST()

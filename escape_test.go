@@ -3,7 +3,8 @@ package handlebars
 import "fmt"
 
 func ExampleEscape() {
-	tpl := MustParse("{{link url text}}")
+	h := New()
+	tpl := h.MustParse("{{link url text}}")
 
 	tpl.RegisterHelper("link", func(url string, text string) SafeString {
 		return SafeString("<a href='" + Escape(url) + "'>" + Escape(text) + "</a>")

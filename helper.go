@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"reflect"
-	"sync"
 )
 
 // Options represents the options argument provided to helpers and context functions.
@@ -17,82 +16,65 @@ type Options struct {
 	hash   map[string]interface{}
 }
 
-// helpers stores all globally registered helpers
-var helpers = make(map[string]reflect.Value)
-
-// protects global helpers
-var helpersMutex sync.RWMutex
-
-func init() {
-	// register builtin helpers
-	RegisterHelper("if", ifHelper)
-	RegisterHelper("unless", unlessHelper)
-	RegisterHelper("with", withHelper)
-	RegisterHelper("each", eachHelper)
-	RegisterHelper("log", logHelper)
-	RegisterHelper("lookup", lookupHelper)
-	RegisterHelper("equal", equalHelper)
-}
-
 // RegisterHelper registers a global helper. That helper will be available to all templates.
-func RegisterHelper(name string, helper interface{}) {
-	helpersMutex.Lock()
-	defer helpersMutex.Unlock()
+func (h *Handlebars) RegisterHelper(name string, helper interface{}) {
+	h.helpersMutex.Lock()
+	defer h.helpersMutex.Unlock()
 
-	if helpers[name] != zero {
-		panic(fmt.Errorf("Helper already registered: %s", name))
+	if h.helpers[name] != zero {
+		panic(fmt.Errorf("Helper already registered: %s", name)) // TODO don't panic
 	}
 
 	val := reflect.ValueOf(helper)
 	ensureValidHelper(name, val)
 
-	helpers[name] = val
+	h.helpers[name] = val
 }
 
 // RegisterHelpers registers several global helpers. Those helpers will be available to all templates.
-func RegisterHelpers(helpers map[string]interface{}) {
+func (h *Handlebars) RegisterHelpers(helpers map[string]interface{}) {
 	for name, helper := range helpers {
-		RegisterHelper(name, helper)
+		h.RegisterHelper(name, helper)
 	}
 }
 
 // RemoveHelper unregisters a global helper
-func RemoveHelper(name string) {
-	helpersMutex.Lock()
-	defer helpersMutex.Unlock()
+func (h *Handlebars) RemoveHelper(name string) {
+	h.helpersMutex.Lock()
+	defer h.helpersMutex.Unlock()
 
-	delete(helpers, name)
+	delete(h.helpers, name)
 }
 
 // RemoveAllHelpers unregisters all global helpers
-func RemoveAllHelpers() {
-	helpersMutex.Lock()
-	defer helpersMutex.Unlock()
+func (h *Handlebars) RemoveAllHelpers() {
+	h.helpersMutex.Lock()
+	defer h.helpersMutex.Unlock()
 
-	helpers = make(map[string]reflect.Value)
+	h.helpers = make(map[string]reflect.Value)
 }
 
 // ensureValidHelper panics if given helper is not valid
 func ensureValidHelper(name string, funcValue reflect.Value) {
 	if funcValue.Kind() != reflect.Func {
-		panic(fmt.Errorf("Helper must be a function: %s", name))
+		panic(fmt.Errorf("Helper must be a function: %s", name)) // TODO don't panic
 	}
 
 	funcType := funcValue.Type()
 
 	if funcType.NumOut() != 1 {
-		panic(fmt.Errorf("Helper function must return a string or a SafeString: %s", name))
+		panic(fmt.Errorf("Helper function must return a string or a SafeString: %s", name)) // TODO don't panic
 	}
 
 	// @todo Check if first returned value is a string, SafeString or interface{} ?
 }
 
 // findHelper finds a globally registered helper
-func findHelper(name string) reflect.Value {
-	helpersMutex.RLock()
-	defer helpersMutex.RUnlock()
+func (h *Handlebars) findHelper(name string) reflect.Value {
+	h.helpersMutex.RLock()
+	defer h.helpersMutex.RUnlock()
 
-	return helpers[name]
+	return h.helpers[name]
 }
 
 // newOptions instanciates a new Options

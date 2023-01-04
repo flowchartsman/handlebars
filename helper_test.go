@@ -233,13 +233,14 @@ func TestHelper(t *testing.T) {
 }
 
 func TestRemoveHelper(t *testing.T) {
-	RegisterHelper("testremovehelper", func() string { return "" })
-	if _, ok := helpers["testremovehelper"]; !ok {
+	h := New()
+	h.RegisterHelper("testremovehelper", func() string { return "" })
+	if _, ok := h.helpers["testremovehelper"]; !ok {
 		t.Error("Failed to register global helper")
 	}
 
-	RemoveHelper("testremovehelper")
-	if _, ok := helpers["testremovehelper"]; ok {
+	h.RemoveHelper("testremovehelper")
+	if _, ok := h.helpers["testremovehelper"]; ok {
 		t.Error("Failed to remove global helper")
 	}
 }
@@ -254,11 +255,12 @@ type Author struct {
 }
 
 func TestHelperCtx(t *testing.T) {
-	RegisterHelper("template", func(name string, options *Options) SafeString {
+	h := New()
+	h.RegisterHelper("template", func(name string, options *Options) SafeString {
 		context := options.Ctx()
 
 		template := name + " - {{ firstName }} {{ lastName }}"
-		result, _ := Render(template, context)
+		result, _ := h.Render(template, context)
 
 		return SafeString(result)
 	})
@@ -266,7 +268,7 @@ func TestHelperCtx(t *testing.T) {
 	template := `By {{ template "namefile" }}`
 	context := Author{"Alan", "Johnson"}
 
-	result, _ := Render(template, context)
+	result, _ := h.Render(template, context)
 	if result != "By namefile - Alan Johnson" {
 		t.Errorf("Failed to render template in helper: %q", result)
 	}

@@ -47,11 +47,12 @@ func ExampleStr() {
 }
 
 func ExampleSafeString() {
-	RegisterHelper("em", func() SafeString {
+	h := New()
+	h.RegisterHelper("em", func() SafeString {
 		return SafeString("<em>FOO BAR</em>")
 	})
 
-	tpl := MustParse("{{em}}")
+	tpl := h.MustParse("{{em}}")
 
 	result := tpl.MustExec(nil)
 	fmt.Print(result)
