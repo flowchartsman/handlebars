@@ -3,13 +3,14 @@ package parser
 import (
 	"regexp"
 
-	"github.com/flowchartsman/handlebars/v3/ast"
+	"github.com/steeringwaves/go-handlebars/ast"
 )
 
 // whitespaceVisitor walks through the AST to perform whitespace control
 //
 // The logic was shamelessly borrowed from:
-//   https://github.com/wycats/handlebars.js/blob/master/lib/handlebars/compiler/whitespace-control.js
+//
+//	https://github.com/wycats/handlebars.js/blob/master/lib/handlebars/compiler/whitespace-control.js
 type whitespaceVisitor struct {
 	isRootSeen bool
 }

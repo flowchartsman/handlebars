@@ -7,8 +7,8 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/flowchartsman/handlebars/v3/ast"
-	"github.com/flowchartsman/handlebars/v3/parser"
+	"github.com/steeringwaves/go-handlebars/ast"
+	"github.com/steeringwaves/go-handlebars/parser"
 )
 
 // Template represents a handlebars template.

@@ -1,4 +1,4 @@
-module github.com/flowchartsman/handlebars/v3
+module github.com/steeringwaves/go-handlebars
 
 go 1.16
 

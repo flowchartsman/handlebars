@@ -3,13 +3,12 @@ package handlebarsjs
 import (
 	"testing"
 
-	"github.com/flowchartsman/handlebars/v3"
+	"github.com/steeringwaves/go-handlebars"
 )
 
-//
 // Those tests come from:
-//   https://github.com/wycats/handlebars.js/blob/master/spec/subexpression.js
 //
+//	https://github.com/wycats/handlebars.js/blob/master/spec/subexpression.js
 var subexpressionsTests = []Test{
 	{
 		"arg-less helper",

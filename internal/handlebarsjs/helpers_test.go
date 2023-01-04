@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/flowchartsman/handlebars/v3"
+	"github.com/steeringwaves/go-handlebars"
 )
 
 //
@@ -94,10 +94,9 @@ func detectDataHelper(options *handlebars.Options) string {
 	return ""
 }
 
-//
 // Those tests come from:
-//   https://github.com/wycats/handlebars.js/blob/master/spec/helper.js
 //
+//	https://github.com/wycats/handlebars.js/blob/master/spec/helper.js
 var helpersTests = []Test{
 	{
 		"helper with complex lookup",

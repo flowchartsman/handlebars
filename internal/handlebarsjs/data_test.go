@@ -3,13 +3,12 @@ package handlebarsjs
 import (
 	"testing"
 
-	"github.com/flowchartsman/handlebars/v3"
+	"github.com/steeringwaves/go-handlebars"
 )
 
-//
 // Those tests come from:
-//   https://github.com/wycats/handlebars.js/blob/master/spec/data.js
 //
+//	https://github.com/wycats/handlebars.js/blob/master/spec/data.js
 var dataTests = []Test{
 	{
 		"passing in data to a compiled function that expects data - works with helpers",
