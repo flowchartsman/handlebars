@@ -1289,7 +1289,6 @@ These handlebars options are currently NOT implemented:
 - `knownHelpers` - list of helpers that are known to exist (truthy) at template execution time
 - `knownHelpersOnly` - allows further optimizations based on the known helpers list
 - `trackIds` - include the id names used to resolve parameters for helpers
-- `noEscape` - disables HTML escaping globally
 - `strict` - templates will throw rather than silently ignore missing fields
 - `assumeObjects` - removes object existence checks when traversing paths
 - `preventIndent` - disables the auto-indententation of nested partials
