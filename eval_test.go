@@ -295,3 +295,19 @@ func TestEvalMethodReturningFunc(t *testing.T) {
 		t.Errorf("Failed to evaluate struct method: %s", output)
 	}
 }
+
+func TestEvalNoEscape(t *testing.T) {
+	t.Parallel()
+
+	source := `Hello {{value}}`
+	expected := `Hello <strong>World</strong>`
+
+	ctx := map[string]string{
+		"value": "<strong>World</strong>",
+	}
+
+	output := MustRender(source, ctx, WithNoEscape(true))
+	if output != expected {
+		t.Errorf("Failed to evaluate struct method: %s", output)
+	}
+}

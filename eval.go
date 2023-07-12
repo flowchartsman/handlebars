@@ -42,6 +42,9 @@ type evalVisitor struct {
 
 	// used for info on panic
 	curNode ast.Node
+
+	// do not escape
+	noEscape bool
 }
 
 // NewEvalVisitor instanciate a new evaluation visitor with given context and initial private data frame
@@ -806,7 +809,7 @@ func (v *evalVisitor) VisitMustache(node *ast.MustacheStatement) interface{} {
 
 	// get string value
 	str := Str(expr)
-	if !isSafe && !node.Unescaped {
+	if !v.noEscape && !isSafe && !node.Unescaped {
 		// escape html
 		str = Escape(str)
 	}

@@ -190,21 +190,30 @@ func (tpl *Template) RegisterPartialTemplate(name string, template *Template) {
 }
 
 // Exec evaluates template with given context.
-func (tpl *Template) Exec(ctx interface{}) (result string, err error) {
-	return tpl.ExecWith(ctx, nil)
+func (tpl *Template) Exec(ctx interface{}, opts ...execOption) (result string, err error) {
+	return tpl.ExecWith(ctx, nil, opts...)
 }
 
 // MustExec evaluates template with given context. It panics on error.
-func (tpl *Template) MustExec(ctx interface{}) string {
-	result, err := tpl.Exec(ctx)
+func (tpl *Template) MustExec(ctx interface{}, opts ...execOption) string {
+	result, err := tpl.Exec(ctx, opts...)
 	if err != nil {
 		panic(err)
 	}
 	return result
 }
 
+type execOption func(*evalVisitor)
+
+// Set noEscape option
+func WithNoEscape(noEscape bool) func(*evalVisitor) {
+	return func(option *evalVisitor) {
+		option.noEscape = noEscape
+	}
+}
+
 // ExecWith evaluates template with given context and private data frame.
-func (tpl *Template) ExecWith(ctx interface{}, privData *DataFrame) (result string, err error) {
+func (tpl *Template) ExecWith(ctx interface{}, privData *DataFrame, opts ...execOption) (result string, err error) {
 	defer errRecover(&err)
 
 	// parses template if necessary
@@ -215,6 +224,9 @@ func (tpl *Template) ExecWith(ctx interface{}, privData *DataFrame) (result stri
 
 	// setup visitor
 	v := newEvalVisitor(tpl, ctx, privData)
+	for _, opt := range opts {
+		opt(v)
+	}
 
 	// visit AST
 	result, _ = tpl.program.Accept(v).(string)
